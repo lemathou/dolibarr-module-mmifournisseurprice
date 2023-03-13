@@ -1,0 +1,62 @@
+# Copyright (C) 2022 Moulin Mathieu <contact@iprospective.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Generic
+#
+
+# Module label 'ModuleMMIFournisseurPriceName'
+ModuleMMIFournisseurPriceName = Prix de revient amélioré
+# Module description 'ModuleMMIFournisseurPriceDesc'
+ModuleMMIFournisseurPriceDesc = Gestion du prix de revient avec le transport du fournisseur
+
+#
+# Admin page
+#
+MMIFournisseurPriceSetup = MMIFournisseurPrice setup
+Settings = Settings
+MMIFournisseurPriceSetupPage = MMIFournisseurPrice setup page
+MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING = Produit servant au Transport
+MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPINGTooltip = Produit/Service utilisé pour le transport qui sera recherché dans les commandes fournisseur
+MMIFOURNISSEURPRICE_DELAI = Délai maxi commandes fournisseur
+MMIFOURNISSEURPRICE_DELAITooltip = On recherchera les commandes fournisseur datant de moins de x mois pour calculer les frais de transport
+
+#
+# About page
+#
+About = About
+MMIFournisseurPriceAbout = About MMIFournisseurPrice
+MMIFournisseurPriceAboutPage = MMIFournisseurPrice about page
+
+#
+# Sample page
+#
+MyPageName = My page name
+
+#
+# Sample widget
+#
+MyWidget = My widget
+MyWidgetDescription = My widget description
+
+#
+# Extrafields
+#
+Extrafield_product_supplier_shipping_price = Frais d'acheminement
+Extrafield_product_supplier_shipping_priceTooltip = Frais d'acheminement par unité de produit
+Extrafieldcommande_fournisseur_shipping_price = Frais d'acheminement
+Extrafieldcommande_fournisseur_shipping_priceTooltip = Frais d'acheminement pour l'ensemble de la commande (en considérant d'éventuels frais supplémentaires)
+Extrafieldcommande_fournisseur_fk_entrepot = Entrepôt réception
+Extrafieldcommande_fournisseur_fk_entrepotTooltip = Entrepôt de réception de la marchandise, lorsque tout est reçu dans le même entrepôt de la société
