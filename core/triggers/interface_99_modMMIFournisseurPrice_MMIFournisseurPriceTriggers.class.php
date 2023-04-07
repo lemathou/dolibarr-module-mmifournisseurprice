@@ -173,14 +173,15 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			// Supplier orders
 			//case 'ORDER_SUPPLIER_CREATE':
 			case 'ORDER_SUPPLIER_MODIFY':
-				if ($object->statut >= 1) {
+				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE) && $object->statut >= 1) {
 					$this->commande_fournisseur_calc($object);
 				}
 				break;
 			case 'ORDER_SUPPLIER_VALIDATE':
 			case 'ORDER_SUPPLIER_APPROVE':
-				$this->commande_fournisseur_calc($object);
-				
+				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE)) {
+					$this->commande_fournisseur_calc($object);
+				}
 				//var_dump($object);
 				//return -1;
 				break;

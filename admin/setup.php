@@ -27,6 +27,7 @@ require_once '../env.inc.php';
 require_once '../main_load.inc.php';
 
 $arrayofparameters = array(
+	'MMIFOURNISSEURPRICE_AUTOCALCULATE'=>array('type'=>'yesno','enabled'=>1),
 	'MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING'=>array('type'=>'int', 'enabled'=>1),
 	'MMIFOURNISSEURPRICE_DELAI'=>array('type'=>'int','enabled'=>1),
 );

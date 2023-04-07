@@ -28,6 +28,7 @@ ModuleMMIFournisseurPriceDesc = Gestion du prix de revient avec le transport du 
 MMIFournisseurPriceSetup = MMIFournisseurPrice setup
 Settings = Settings
 MMIFournisseurPriceSetupPage = MMIFournisseurPrice setup page
+MMIFOURNISSEURPRICE_AUTOCALCULATE = Calcul automatique de prix de revient
 MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING = Produit servant au Transport
 MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPINGTooltip = Produit/Service utilisé pour le transport qui sera recherché dans les commandes fournisseur
 MMIFOURNISSEURPRICE_DELAI = Délai maxi commandes fournisseur
@@ -56,6 +57,8 @@ MyWidgetDescription = My widget description
 #
 Extrafield_product_supplier_shipping_price = Frais d'acheminement
 Extrafield_product_supplier_shipping_priceTooltip = Frais d'acheminement par unité de produit
+Extrafield_product_logistic_cost_price = Frais logistiques
+Extrafield_product_misc_cost_price = Frais divers
 Extrafieldcommande_fournisseur_shipping_price = Frais d'acheminement
 Extrafieldcommande_fournisseur_shipping_priceTooltip = Frais d'acheminement pour l'ensemble de la commande (en considérant d'éventuels frais supplémentaires)
 Extrafieldcommande_fournisseur_fk_entrepot = Entrepôt réception

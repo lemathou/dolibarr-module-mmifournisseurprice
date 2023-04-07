@@ -115,6 +115,7 @@ class modMMIFournisseurPrice extends DolibarrModules
 			),
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			'hooks' => array(
+				'pricesuppliercard',
 				//   'data' => array(
 				//       'hookcontext1',
 				//       'hookcontext2',
@@ -422,7 +423,19 @@ class modMMIFournisseurPrice extends DolibarrModules
 		// Create extrafields during init
 		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		$extrafields = new ExtraFields($this->db);
+
+		// Product	
+		// logistic cost
+        $extrafields->addExtraField('logistic_cost_price', $langs->trans('Extrafield_product_logistic_cost_price'), 'price', 100, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_logistic_logistic_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
+		// misc cost
+        $extrafields->addExtraField('misc_cost_price', $langs->trans('Extrafield_product_misc_cost_price'), 'price', 100, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_misc_logistic_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
+
+		// Suppliers / Replenish		
+		// Replenish note
+		$extrafields->addExtraField('replenish_note', $langs->trans('Extrafield_replenish_note'), 'varchar', 1, 255, 'societe', 0, 0, '', "", 1, '', 0, $langs->trans('ExtrafieldToolTip_replenish_note'), '', $conf->entity, 'mmiproduct@mmiproduct', '$conf->mmiproduct->enabled');
+
 		// Product Fournisseur Price
+		// Supplier shipping price
         $extrafields->addExtraField('shipping_price', $langs->trans('Extrafield_product_supplier_shipping_price'), 'price', 100, "20,5", 'product_fournisseur_price', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_supplier_shipping_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
 		// Commande Fournisseur
         $extrafields->addExtraField('shipping_price', $langs->trans('Extrafieldcommande_fournisseur_shipping_price'), 'price', 100, "20,5", 'commande_fournisseur', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_commande_fournisseur_shipping_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
