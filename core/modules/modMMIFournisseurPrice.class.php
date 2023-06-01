@@ -429,23 +429,15 @@ class modMMIFournisseurPrice extends DolibarrModules
         $extrafields->addExtraField('logistic_cost_price', $langs->trans('Extrafield_product_logistic_cost_price'), 'price', 100, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_logistic_logistic_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
 		// misc cost
         $extrafields->addExtraField('misc_cost_price', $langs->trans('Extrafield_product_misc_cost_price'), 'price', 100, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_misc_logistic_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-
-		// Suppliers / Replenish		
-		// Replenish note
-		$extrafields->addExtraField('replenish_note', $langs->trans('Extrafield_replenish_note'), 'varchar', 1, 255, 'societe', 0, 0, '', "", 1, '', 0, $langs->trans('ExtrafieldToolTip_replenish_note'), '', $conf->entity, 'mmiproduct@mmiproduct', '$conf->mmiproduct->enabled');
+		// shipping cost
+        $extrafields->addExtraField('shipping_cost_price', $langs->trans('Extrafield_product_shipping_cost_price'), 'price', 100, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_shipping_cost_price'), '!$conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
 
 		// Product Fournisseur Price
 		// Supplier shipping price
-        $extrafields->addExtraField('shipping_price', $langs->trans('Extrafield_product_supplier_shipping_price'), 'price', 100, "20,5", 'product_fournisseur_price', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_supplier_shipping_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
+        $extrafields->addExtraField('shipping_price', $langs->trans('Extrafield_product_supplier_shipping_price'), 'price', 100, "20,5", 'product_fournisseur_price', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_supplier_shipping_price'), '!$conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
 		// Commande Fournisseur
         $extrafields->addExtraField('shipping_price', $langs->trans('Extrafieldcommande_fournisseur_shipping_price'), 'price', 100, "20,5", 'commande_fournisseur', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_commande_fournisseur_shipping_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
         $extrafields->addExtraField('fk_entrepot', $langs->trans('Extrafieldcommande_fournisseur_fk_entrepot'), 'link', 100, "", 'commande_fournisseur', 0, 0, '', "a:1:{s:7:\"options\";a:1:{s:47:\"Entrepot:product/stock/class/entrepot.class.php\";N;}}", 1, '', 1, $langs->trans('ExtrafieldToolTip_commande_fournisseur_fk_entrepot'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-		
-		//$result1=$extrafields->addExtraField('mmifournisseurprice_myattr1', "New Attr 1 label", 'boolean', 1,  3, 'thirdparty',   0, 0, '', '', 1, '', 0, 0, '', '', 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-		//$result2=$extrafields->addExtraField('mmifournisseurprice_myattr2', "New Attr 2 label", 'varchar', 1, 10, 'project',      0, 0, '', '', 1, '', 0, 0, '', '', 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-		//$result3=$extrafields->addExtraField('mmifournisseurprice_myattr3', "New Attr 3 label", 'varchar', 1, 10, 'bank_account', 0, 0, '', '', 1, '', 0, 0, '', '', 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-		//$result4=$extrafields->addExtraField('mmifournisseurprice_myattr4', "New Attr 4 label", 'select',  1,  3, 'thirdparty',   0, 1, '', array('options'=>array('code1'=>'Val1','code2'=>'Val2','code3'=>'Val3')), 1,'', 0, 0, '', '', 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-		//$result5=$extrafields->addExtraField('mmifournisseurprice_myattr5', "New Attr 5 label", 'text',    1, 10, 'user',         0, 0, '', '', 1, '', 0, 0, '', '', 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
 
 		// Permissions
 		$this->remove($options);

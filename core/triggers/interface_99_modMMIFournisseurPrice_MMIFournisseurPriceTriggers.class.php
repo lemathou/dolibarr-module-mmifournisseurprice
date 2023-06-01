@@ -143,11 +143,22 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 
 			// Products
 			//case 'PRODUCT_CREATE':
-			//case 'PRODUCT_MODIFY':
+			case 'PRODUCT_MODIFY':
+				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE)) {
+					$this->product_cost_price_calc($object->id);
+				}
+				break;
 			//case 'PRODUCT_DELETE':
 			//case 'PRODUCT_PRICE_MODIFY':
 			//case 'PRODUCT_SET_MULTILANGS':
 			//case 'PRODUCT_DEL_MULTILANGS':
+
+			case 'SUPPLIER_PRODUCT_BUYPRICE_MODIFY':
+				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE)) {
+					$this->product_cost_price_calc($object->product_id);
+				}
+				
+				break;
 
 			//Stock mouvement
 			//case 'STOCK_MOVEMENT':
@@ -173,13 +184,13 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			// Supplier orders
 			//case 'ORDER_SUPPLIER_CREATE':
 			case 'ORDER_SUPPLIER_MODIFY':
-				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE) && $object->statut >= 1) {
+				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS) && $object->statut >= 1) {
 					$this->commande_fournisseur_calc($object);
 				}
 				break;
 			case 'ORDER_SUPPLIER_VALIDATE':
 			case 'ORDER_SUPPLIER_APPROVE':
-				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE)) {
+				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS)) {
 					$this->commande_fournisseur_calc($object);
 				}
 				//var_dump($object);
@@ -433,15 +444,56 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			//$productfournisseurprice->fetch_optionals();
 			$productfournisseurprice->array_options['options_shipping_price'] = $product_shipping_price_unit;
 			$productfournisseurprice->update($user);
-			//var_dump($productfournisseurprice);
-			$product->fetch($r['fk_product']);
-			$product->cost_price = $productfournisseurprice->unitprice + $product_shipping_price_unit;
-			//var_dump($productfournisseurprice->unitprice);
-			//var_dump($product->cost_price);
-			//var_dump($product);
-			$i = $product->update($product->id, $user);
-			//var_dump($i);
 		}
 		//var_dump($l);
+
+		return true;
+	}
+
+	public function product_cost_price_calc($product_id)
+	{
+		global $conf, $user;
+
+		$product = new Product($this->db);
+		$product->fetch($product_id);
+		//var_dump($product->cost_price);
+
+		$product_fourn = new ProductFournisseur($this->db);
+		$product_fourn_list = $product_fourn->list_product_fournisseur_price($product_id);
+		//var_dump($product_fourn_list);
+		if (empty($product_fourn_list))
+			return;
+
+		$productfournisseurprice = new ProductFournisseurPrice($this->db);
+		
+		// On calcule avec le moins cher.
+		$fourn_shipping_cost_price = 0;
+		$fourn_unit_price = 0;
+		foreach($product_fourn_list as $product_fourn_elem) {
+			$productfournisseurprice->fetch($product_fourn_elem->product_fourn_price_id);
+			//$productfournisseurprice->fetch_optionals();
+			//var_dump($fourn_shipping_cost_price+$fourn_unit_price, $productfournisseurprice->unitprice, $productfournisseurprice->array_options, $productfournisseurprice->array_options['options_shipping_price']);
+			//var_dump($productfournisseurprice);
+			if($fourn_shipping_cost_price+$fourn_unit_price > 0 && $fourn_shipping_cost_price+$fourn_unit_price < $productfournisseurprice->unitprice + (float)$productfournisseurprice->array_options['options_shipping_price'])
+				continue;
+			
+			$fourn_shipping_cost_price = $productfournisseurprice->array_options['options_shipping_price'];
+			$fourn_unit_price = $productfournisseurprice->unitprice;
+		}
+		//echo 'ok';
+		$product->array_options['options_shipping_cost_price'] = $fourn_shipping_cost_price;
+		$product->cost_price = $fourn_unit_price
+		+ $product->array_options['options_shipping_cost_price']
+		+ $product->array_options['options_misc_cost_price']
+		+ $product->array_options['options_logistic_cost_price'];
+		//var_dump($productfournisseurprice->unitprice);
+		//var_dump($product->cost_price);
+		//var_dump($product);
+		$product->update($product->id, $user, true);
+		//$product->fetch($product->id);
+		
+		//var_dump($object);
+
+		return true;
 	}
 }
