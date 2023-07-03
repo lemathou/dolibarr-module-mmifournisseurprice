@@ -137,7 +137,7 @@ class modMMIFournisseurPrice extends DolibarrModules
 		// A condition to hide module
 		$this->hidden = false;
 		// List of module class names as string that must be enabled if this module is enabled. Example: array('always1'=>'modModuleToEnable1','always2'=>'modModuleToEnable2', 'FR1'=>'modModuleToEnableFR'...)
-		$this->depends = array('modMMICommon', 'modProduct', 'modFournisseur');
+		$this->depends = array('modMMICommon', 'modMMIShipping', 'modProduct', 'modFournisseur', 'modReception');
 		$this->requiredby = array(); // List of module class names as string to disable if this one is disabled. Example: array('modModuleToDisable1', ...)
 		$this->conflictwith = array(); // List of module class names as string this module is in conflict with. Example: array('modModuleToDisable1', ...)
 
@@ -437,7 +437,6 @@ class modMMIFournisseurPrice extends DolibarrModules
         $extrafields->addExtraField('shipping_price', $langs->trans('Extrafield_product_supplier_shipping_price'), 'price', 100, "20,5", 'product_fournisseur_price', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_supplier_shipping_price'), '!$conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
 		// Commande Fournisseur
         $extrafields->addExtraField('shipping_price', $langs->trans('Extrafieldcommande_fournisseur_shipping_price'), 'price', 100, "20,5", 'commande_fournisseur', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_commande_fournisseur_shipping_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-        $extrafields->addExtraField('fk_entrepot', $langs->trans('Extrafieldcommande_fournisseur_fk_entrepot'), 'link', 100, "", 'commande_fournisseur', 0, 0, '', "a:1:{s:7:\"options\";a:1:{s:47:\"Entrepot:product/stock/class/entrepot.class.php\";N;}}", 1, '', 1, $langs->trans('ExtrafieldToolTip_commande_fournisseur_fk_entrepot'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
 
 		// Permissions
 		$this->remove($options);
