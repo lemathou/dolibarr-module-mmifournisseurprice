@@ -116,6 +116,7 @@ class modMMIFournisseurPrice extends DolibarrModules
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			'hooks' => array(
 				'pricesuppliercard',
+				'productservicelist',
 				//   'data' => array(
 				//       'hookcontext1',
 				//       'hookcontext2',
@@ -137,7 +138,7 @@ class modMMIFournisseurPrice extends DolibarrModules
 		// A condition to hide module
 		$this->hidden = false;
 		// List of module class names as string that must be enabled if this module is enabled. Example: array('always1'=>'modModuleToEnable1','always2'=>'modModuleToEnable2', 'FR1'=>'modModuleToEnableFR'...)
-		$this->depends = array('modMMICommon', 'modMMIShipping', 'modProduct', 'modFournisseur', 'modReception');
+		$this->depends = array('modMMICommon', 'modMMIShipping', 'modMMIProduct', 'modProduct', 'modFournisseur', 'modReception');
 		$this->requiredby = array(); // List of module class names as string to disable if this one is disabled. Example: array('modModuleToDisable1', ...)
 		$this->conflictwith = array(); // List of module class names as string this module is in conflict with. Example: array('modModuleToDisable1', ...)
 
@@ -424,19 +425,9 @@ class modMMIFournisseurPrice extends DolibarrModules
 		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		$extrafields = new ExtraFields($this->db);
 
-		// Product	
-		// logistic cost
-        $extrafields->addExtraField('logistic_cost_price', $langs->trans('Extrafield_product_logistic_cost_price'), 'price', 100, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_logistic_logistic_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-		// misc cost
-        $extrafields->addExtraField('misc_cost_price', $langs->trans('Extrafield_product_misc_cost_price'), 'price', 100, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_misc_logistic_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-		// shipping cost
-        $extrafields->addExtraField('shipping_cost_price', $langs->trans('Extrafield_product_shipping_cost_price'), 'price', 100, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_shipping_cost_price'), '!$conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
+		// Supplier price
 
-		// Product Fournisseur Price
-		// Supplier shipping price
-        $extrafields->addExtraField('shipping_price', $langs->trans('Extrafield_product_supplier_shipping_price'), 'price', 100, "20,5", 'product_fournisseur_price', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_supplier_shipping_price'), '!$conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
-		// Commande Fournisseur
-        $extrafields->addExtraField('shipping_price', $langs->trans('Extrafieldcommande_fournisseur_shipping_price'), 'price', 100, "20,5", 'commande_fournisseur', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_commande_fournisseur_shipping_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
+        $extrafields->addExtraField('validity_date', $langs->trans('Extrafield_product_supplier_price_validity_date'), 'date', 100, "", 'product_fournisseur_price', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_supplier_price_validity_date'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_VALIDITY_DATE');
 
 		// Permissions
 		$this->remove($options);

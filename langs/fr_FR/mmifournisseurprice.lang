@@ -34,6 +34,8 @@ MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING = Produit servant au Transport
 MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPINGTooltip = Produit/Service utilisé pour le transport qui sera recherché dans les commandes fournisseur
 MMIFOURNISSEURPRICE_DELAI = Délai maxi commandes fournisseur
 MMIFOURNISSEURPRICE_DELAITooltip = On recherchera les commandes fournisseur datant de moins de x mois pour calculer les frais de transport
+MMIFOURNISSEURPRICE_VALIDITY_DATE = Gestion de la date de validité d'un prix d'achat fournisseur
+MMIFOURNISSEURPRICE_FOURN_PRICE_UPDATE = Mise à jour prix d'achat en masse
 
 #
 # About page
@@ -56,12 +58,5 @@ MyWidgetDescription = My widget description
 #
 # Extrafields
 #
-Extrafield_product_supplier_shipping_price = Frais d'acheminement
-Extrafield_product_supplier_shipping_priceTooltip = Frais d'acheminement par unité de produit
-Extrafield_product_shipping_cost_price = Frais d'acheminement
-Extrafield_product_logistic_cost_price = Frais logistiques
-Extrafield_product_misc_cost_price = Frais divers
-Extrafieldcommande_fournisseur_shipping_price = Frais d'acheminement
-Extrafieldcommande_fournisseur_shipping_priceTooltip = Frais d'acheminement pour l'ensemble de la commande (en considérant d'éventuels frais supplémentaires)
-Extrafieldcommande_fournisseur_fk_entrepot = Entrepôt réception
-Extrafieldcommande_fournisseur_fk_entrepotTooltip = Entrepôt de réception de la marchandise, lorsque tout est reçu dans le même entrepôt de la société
+Extrafield_product_supplier_price_validity_date = Date limite de validité du prix
+ExtrafieldTooltip_product_supplier_price_validity_date = Date limite à laquelle le fournisseur s'engage à nous vendre le produit à ce prix

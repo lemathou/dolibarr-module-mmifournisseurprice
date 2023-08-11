@@ -31,6 +31,7 @@ $arrayofparameters = array(
 	'MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS'=>array('type'=>'yesno','enabled'=>1),
 	'MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING'=>array('type'=>'int', 'enabled'=>1),
 	'MMIFOURNISSEURPRICE_DELAI'=>array('type'=>'int','enabled'=>1),
+	'MMIFOURNISSEURPRICE_VALIDITY_DATE'=>array('type'=>'yesno','enabled'=>1),
 );
 
 require_once('../../mmicommon/admin/mmisetup_1.inc.php');

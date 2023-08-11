@@ -2,15 +2,173 @@
 
 dol_include_once('custom/mmicommon/class/mmi_actions.class.php');
 
+require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.class.php';
+require_once DOL_DOCUMENT_ROOT.'/fourn/class/fournisseur.product.class.php';
+
 class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 {
 	const MOD_NAME = 'mmifournisseurprice';
+	
+	function addMoreMassActions($parameters, &$object, &$action, $hookmanager)
+	{
+		global $langs;
+
+		if ($this->in_context($parameters, ['productservicelist']))
+		{
+			//var_dump($parameters);
+			//$this->results = [];
+			$this->resprints = '<option value="fourn_price">'.img_picto('', 'supplier', 'class="pictofixedwidth"').$langs->trans("MMIFOURNISSEURPRICE_FOURN_PRICE_UPDATE").'</option>';
+			//var_dump($this->resprints);
+		}
+
+		return 0;
+	}
+
+	function doMassActions($parameters, &$object, &$action, $hookmanager)
+	{
+		global $db, $user;
+		
+		$error = 0; // Error counter
+		$error = 0; // Error counter
+		$myvalue = 'test'; // A result value
+		$print = '';
+		
+		if ($this->in_context($parameters, ['productservicelist']))
+		{
+			//var_dump($parameters);
+			//var_dump($action); var_dump($confirm); var_dump($_POST); die();
+			if ($action == 'confirm_fourn_price') {
+
+				$confirm = GETPOST('confirm');
+				if (empty($confirm) || $confirm=='no') {
+					$error++;
+					$this->errors[] = 'Merci de confirmer...';
+				}
+
+				$fk_soc = GETPOST('fk_soc');
+				$fourn = new Fournisseur($db);
+				$fourn->fetch($fk_soc);
+				//var_dump($fourn);
+				if (empty($fk_soc) || empty($fourn->id)) {
+					$error++;
+					$this->errors[] = 'Merci de sélectionner un fournisseur...';
+				}
+
+				$fourn_price_percent = GETPOST('fourn_price_percent');
+				if (empty($fourn_price_percent) || $fourn_price_percent==0) {
+					$error++;
+					$this->errors[] = 'Merci de saisir un pourcentage d\'augmentation non nul...';
+				}
+
+				$fourn_price_limit_date = GETPOST('fourn_price_limit_date');
+
+				if (!$error && !empty($parameters['toselect'])) {
+					$product_ids = $parameters['toselect'];
+					$product_fourn_static = new ProductFournisseur($db);
+					foreach($product_ids as $id) {
+						$product_fourn_list = $product_fourn_static->list_product_fournisseur_price($id, '', '');
+						foreach($product_fourn_list as $pf) {
+							if ($pf->fourn_id != $fk_soc)
+								continue;
+							$buyprice = $pf->fourn_unitprice*(1+$fourn_price_percent/100);
+							$charges = 0;
+							$pf->update_buyprice($pf->fourn_qty, $buyprice, $user, $fourn, $pf->fk_availability, $pf->fourn_ref, $pf->fourn_tva_tx, $charges, $pf->fourn_remise_percent);
+							if (!empty($fourn_price_limit_date)) {
+								$sql = 'UPDATE '.$db->prefix().'product_fournisseur_price_extrafields
+									SET validity_date="'.$fourn_price_limit_date.'"
+									WHERE fk_object='.$pf->product_fourn_price_id;
+								echo $sql;
+								$res = $db->query($sql);
+							}
+							//var_dump($pf);
+						}
+					}
+					//var_dump($parameters, $_POST);
+					//die('Yeah baby yeah');
+				}
+			}
+		}
+
+		if (! $error)
+		{
+			$this->results = array('myreturn' => $myvalue);
+			$this->resprints = $print;
+			return 0; // or return 1 to replace standard code
+		}
+		else
+		{
+			if (empty($this->errors))
+				$this->errors[] = 'Error message';
+			return -1;
+		}
+	}
+
+	function doPreMassActions($parameters, &$object, &$action, $hookmanager)
+	{
+		$error = 0; // Error counter
+		$myvalue = 'test'; // A result value
+		$print = '';
+
+		//print_r($parameters);
+		//echo "action: " . $action;
+		//print_r($object);
+		
+		$db = $GLOBALS['db'];
+		
+		if ($this->in_context($parameters, ['productservicelist']))
+		{
+			//var_dump($parameters);
+			if ($_POST['massaction']=='fourn_price') {
+				$print .= dol_get_fiche_head(null, '', '');
+				$print .= '<p>Modification de prix d\'achat en masse ?</p>';
+				$print .= '<input type="hidden" name="action" value="confirm_fourn_price">';
+
+				// Form sélection
+				$print .= '<p>Restriction au fournisseur : <select name="fk_soc">';
+				$print .= '<option value="">-- Choisir --</option>';
+				$sql = 'SELECT s.rowid, s.nom label
+					FROM '.MAIN_DB_PREFIX.'societe s
+					WHERE s.fournisseur=1
+					ORDER BY s.nom';
+				$resql = $db->query($sql);
+				//var_dump($resql); die();
+				while($row=$resql->fetch_assoc()) {
+					$print .= '<option value="'.$row['rowid'].'">'.$row['label'].'</option>';
+				}
+				$print .= '</select></p>';
+				
+				// Form sélection
+				$print .= '<p>Pourcentage d\'augmentation : <input type="text" name="fourn_price_percent" value="" />&nbsp;%</p>';
+				
+				// Form sélection
+				$print .= '<p>Date limite de validité du prix : <input type="date" name="fourn_price_limit_date" value="" /></p>';
+				
+				$print .= '<p>Confirmation : <select class="flat width75 marginleftonly marginrightonly" id="confirm" name="confirm"><option value="yes">Oui</option>
+<option value="no" selected="">Non</option></select>';
+				$print .= '<input class="button valignmiddle confirmvalidatebutton" type="submit" value="Mettre à jour" /></p>';
+				$print .= dol_get_fiche_end();
+			}
+		}
+
+		if (! $error)
+		{
+			$this->results = array('myreturn' => $myvalue);
+			$this->resprints = $print;
+			return 0; // or return 1 to replace standard code
+		}
+		else
+		{
+			$this->errors[] = 'Error message';
+			return -1;
+		}
+	}
 
 	function ObjectExtraFields($parameters, &$object, &$action, $hookmanager)
 	{
 		$error = 0; // Error counter
 		$print = '';
 		
+		// @todo : mettre les champs dans le module mmiproduct, ne laisser que la partie calcul auto
 		if ($this->in_context($parameters, 'pricesuppliercard'))
 		{
 			global $conf, $langs;
