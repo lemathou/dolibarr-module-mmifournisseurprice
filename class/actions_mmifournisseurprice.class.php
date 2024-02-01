@@ -17,7 +17,8 @@ class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 		{
 			//var_dump($parameters);
 			//$this->results = [];
-			$this->resprints = '<option value="fourn_price">'.img_picto('', 'supplier', 'class="pictofixedwidth"').$langs->trans("MMIFOURNISSEURPRICE_FOURN_PRICE_UPDATE").'</option>';
+			$this->resprints .= '<option value="fourn_price">'.img_picto('', 'supplier', 'class="pictofixedwidth"').$langs->trans("MMIFOURNISSEURPRICE_FOURN_PRICE_UPDATE").'</option>';
+			$this->resprints .= '<option value="fourn_remise">'.img_picto('', 'supplier', 'class="pictofixedwidth"').$langs->trans("MMIFOURNISSEURPRICE_FOURN_REMISE_UPDATE").'</option>';
 			//var_dump($this->resprints);
 		}
 
@@ -29,7 +30,6 @@ class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 		global $db, $user;
 		
 		$error = 0; // Error counter
-		$error = 0; // Error counter
 		$myvalue = 'test'; // A result value
 		$print = '';
 		
@@ -37,6 +37,7 @@ class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 		{
 			//var_dump($parameters);
 			//var_dump($action); var_dump($confirm); var_dump($_POST); die();
+			
 			if ($action == 'confirm_fourn_price') {
 
 				$confirm = GETPOST('confirm');
@@ -64,23 +65,87 @@ class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 
 				if (!$error && !empty($parameters['toselect'])) {
 					$product_ids = $parameters['toselect'];
+					$product_static = new Product($db);
 					$product_fourn_static = new ProductFournisseur($db);
 					foreach($product_ids as $id) {
+						$product_static->fetch($id);
 						$product_fourn_list = $product_fourn_static->list_product_fournisseur_price($id, '', '');
 						foreach($product_fourn_list as $pf) {
+							/** @var ProductFournisseur $pf **/
 							if ($pf->fourn_id != $fk_soc)
 								continue;
 							$buyprice = $pf->fourn_unitprice*(1+$fourn_price_percent/100);
 							$charges = 0;
-							$pf->update_buyprice($pf->fourn_qty, $buyprice, $user, $fourn, $pf->fk_availability, $pf->fourn_ref, $pf->fourn_tva_tx, $charges, $pf->fourn_remise_percent);
+							//var_dump("update_buyprice($pf->fourn_qty, $buyprice, $user, $fourn, $pf->fk_availability, $pf->fourn_ref, $pf->fourn_tva_tx, $charges, $pf->fourn_remise_percent)"); die();
+							$res = $pf->update_buyprice($pf->fourn_qty, $buyprice, $user, $pf->price_base_type, $fourn, $pf->fk_availability, $pf->ref_supplier, $pf->fourn_tva_tx, $charges, $pf->fourn_remise_percent);
+							if (!$res) {
+								$error++;
+								$errors[] = 'Erreur de calcul du prix achat pour '.$product_static->name;
+								continue;
+							}
 							if (!empty($fourn_price_limit_date)) {
 								$sql = 'UPDATE '.$db->prefix().'product_fournisseur_price_extrafields
 									SET validity_date="'.$fourn_price_limit_date.'"
 									WHERE fk_object='.$pf->product_fourn_price_id;
-								echo $sql;
+								//echo $sql;
 								$res = $db->query($sql);
+								if (!$res) {
+									$error++;
+									$errors[] = 'Erreur de calcul du prix achat pour '.$product_static->name;
+								}
 							}
 							//var_dump($pf);
+						}
+					}
+					//var_dump($parameters, $_POST);
+					//die('Yeah baby yeah');
+				}
+			}
+			// Modifuication de la remise fournisseur
+			elseif ($action == 'confirm_fourn_remise') {
+
+				$confirm = GETPOST('confirm');
+				if (empty($confirm) || $confirm=='no') {
+					$error++;
+					$this->errors[] = 'Merci de confirmer...';
+				}
+
+				$fk_soc = GETPOST('fk_soc');
+				$fourn = new Fournisseur($db);
+				$fourn->fetch($fk_soc);
+				//var_dump($fourn);
+				if (empty($fk_soc) || empty($fourn->id)) {
+					$error++;
+					$this->errors[] = 'Merci de sélectionner un fournisseur...';
+				}
+
+				$fourn_remise_percent = GETPOST('fourn_remise_percent');
+				if (empty($fourn_remise_percent) || $fourn_remise_percent==0) {
+					$error++;
+					$this->errors[] = 'Merci de saisir un pourcentage de remise non nul...';
+				}
+
+				if (!$error && !empty($parameters['toselect'])) {
+					$product_ids = $parameters['toselect'];
+					$product_static = new Product($db);
+					$product_fourn_static = new ProductFournisseur($db);
+					foreach($product_ids as $id) {
+						$product_static->fetch($id);
+						$product_fourn_list = $product_fourn_static->list_product_fournisseur_price($id, '', '');
+						foreach($product_fourn_list as $pf) {
+							/** @var ProductFournisseur $pf **/
+							if ($pf->fourn_id != $fk_soc)
+								continue;
+							$charges = 0;
+							//var_dump($pf); die();
+							//var_dump($pf, $pf->fourn_qty, $pf->fourn_unitprice, $pf->price_base_type, $user, $fourn, $pf->fk_availability, $pf->fourn_ref, $pf->fourn_tva_tx, $charges, $fourn_remise_percent); die();
+							$res = $pf->update_buyprice($pf->fourn_qty, $pf->fourn_unitprice, $user, $pf->price_base_type, $fourn, $pf->fk_availability, $pf->ref_supplier, $pf->fourn_tva_tx, $charges, $fourn_remise_percent);
+							//var_dump($pf);
+							if (!$res) {
+								$error++;
+								$errors[] = 'Erreur de calcul du prix achat pour '.$product_static->name;
+								continue;
+							}
 						}
 					}
 					//var_dump($parameters, $_POST);
@@ -114,11 +179,13 @@ class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 		//print_r($object);
 		
 		$db = $GLOBALS['db'];
+
+		$massaction = GETPOST('massaction');
 		
 		if ($this->in_context($parameters, ['productservicelist']))
 		{
 			//var_dump($parameters);
-			if ($_POST['massaction']=='fourn_price') {
+			if ($massaction=='fourn_price') {
 				$print .= dol_get_fiche_head(null, '', '');
 				$print .= '<p>Modification de prix d\'achat en masse ?</p>';
 				$print .= '<input type="hidden" name="action" value="confirm_fourn_price">';
@@ -142,6 +209,34 @@ class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 				
 				// Form sélection
 				$print .= '<p>Date limite de validité du prix : <input type="date" name="fourn_price_limit_date" value="" /></p>';
+				
+				$print .= '<p>Confirmation : <select class="flat width75 marginleftonly marginrightonly" id="confirm" name="confirm"><option value="yes">Oui</option>
+<option value="no" selected="">Non</option></select>';
+				$print .= '<input class="button valignmiddle confirmvalidatebutton" type="submit" value="Mettre à jour" /></p>';
+				$print .= dol_get_fiche_end();
+			}
+			//var_dump($parameters);
+			if ($massaction=='fourn_remise') {
+				$print .= dol_get_fiche_head(null, '', '');
+				$print .= '<p>Modification de remise fournisseur en masse ?</p>';
+				$print .= '<input type="hidden" name="action" value="confirm_fourn_remise">';
+
+				// Form sélection
+				$print .= '<p>Restriction au fournisseur : <select name="fk_soc">';
+				$print .= '<option value="">-- Choisir --</option>';
+				$sql = 'SELECT s.rowid, s.nom label
+					FROM '.MAIN_DB_PREFIX.'societe s
+					WHERE s.fournisseur=1
+					ORDER BY s.nom';
+				$resql = $db->query($sql);
+				//var_dump($resql); die();
+				while($row=$resql->fetch_assoc()) {
+					$print .= '<option value="'.$row['rowid'].'">'.$row['label'].'</option>';
+				}
+				$print .= '</select></p>';
+				
+				// Form sélection
+				$print .= '<p>Pourcentage de remise : <input type="text" name="fourn_remise_percent" value="" />&nbsp;%</p>';
 				
 				$print .= '<p>Confirmation : <select class="flat width75 marginleftonly marginrightonly" id="confirm" name="confirm"><option value="yes">Oui</option>
 <option value="no" selected="">Non</option></select>';

@@ -35,7 +35,8 @@ MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPINGTooltip = Produit/Service utilisé pour l
 MMIFOURNISSEURPRICE_DELAI = Délai maxi commandes fournisseur
 MMIFOURNISSEURPRICE_DELAITooltip = On recherchera les commandes fournisseur datant de moins de x mois pour calculer les frais de transport
 MMIFOURNISSEURPRICE_VALIDITY_DATE = Gestion de la date de validité d'un prix d'achat fournisseur
-MMIFOURNISSEURPRICE_FOURN_PRICE_UPDATE = Mise à jour prix d'achat en masse
+MMIFOURNISSEURPRICE_FOURN_PRICE_UPDATE = Mise à jour prix d'achat fournisseur
+MMIFOURNISSEURPRICE_FOURN_REMISE_UPDATE = Mise à jour remise fournisseur
 
 #
 # About page
