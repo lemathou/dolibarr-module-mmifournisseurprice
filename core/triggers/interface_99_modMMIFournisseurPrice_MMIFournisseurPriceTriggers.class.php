@@ -33,7 +33,8 @@
  */
 
 require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
-
+require_once DOL_DOCUMENT_ROOT.'/product/class/product.class.php';
+require_once DOL_DOCUMENT_ROOT.'/product/class/productfournisseurprice.class.php';
 
 /**
  *  Class of triggers for MMIFournisseurPrice module
@@ -409,10 +410,8 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 		//var_dump($c);
 		//var_dump($total_ht);
 		
-		dol_include_once('product/class/product.class.php');
 		$product = new Product($this->db);
 		
-		dol_include_once('product/class/productfournisseurprice.class.php');
 		$productfournisseurprice = new ProductFournisseurPrice($this->db);
 		
 		// Liste par fournisseur
@@ -474,11 +473,11 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			//$productfournisseurprice->fetch_optionals();
 			//var_dump($fourn_shipping_cost_price+$fourn_unit_price, $productfournisseurprice->unitprice, $productfournisseurprice->array_options, $productfournisseurprice->array_options['options_shipping_price']);
 			//var_dump($productfournisseurprice);
-			if($fourn_shipping_cost_price+$fourn_unit_price > 0 && $fourn_shipping_cost_price+$fourn_unit_price < $productfournisseurprice->unitprice + (float)$productfournisseurprice->array_options['options_shipping_price'])
+			if($fourn_shipping_cost_price+$fourn_unit_price > 0 && $fourn_shipping_cost_price+$fourn_unit_price < $productfournisseurprice->unitprice*(1-$productfournisseurprice->remise_percent/100) + (float)$productfournisseurprice->array_options['options_shipping_price'])
 				continue;
 			
 			$fourn_shipping_cost_price = $productfournisseurprice->array_options['options_shipping_price'];
-			$fourn_unit_price = $productfournisseurprice->unitprice;
+			$fourn_unit_price = $productfournisseurprice->unitprice*(1-$productfournisseurprice->remise_percent/100);
 		}
 		//echo 'ok';
 		$product->array_options['options_shipping_cost_price'] = $fourn_shipping_cost_price;
