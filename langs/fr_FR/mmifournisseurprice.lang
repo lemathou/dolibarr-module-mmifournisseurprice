@@ -34,9 +34,11 @@ MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING = Produit servant au Transport
 MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPINGTooltip = Produit/Service utilisé pour le transport qui sera recherché dans les commandes fournisseur
 MMIFOURNISSEURPRICE_DELAI = Délai maxi commandes fournisseur
 MMIFOURNISSEURPRICE_DELAITooltip = On recherchera les commandes fournisseur datant de moins de x mois pour calculer les frais de transport
-MMIFOURNISSEURPRICE_VALIDITY_DATE = Gestion de la date de validité d'un prix d'achat fournisseur
+MMIFOURNISSEURPRICE_VALIDITY_DATE = Gestion de la date de validité de la grille de produits fournisseur (prix d'achat)
 MMIFOURNISSEURPRICE_FOURN_PRICE_UPDATE = Mise à jour prix d'achat fournisseur
 MMIFOURNISSEURPRICE_FOURN_REMISE_UPDATE = Mise à jour remise fournisseur
+MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_FROM = Expéditeur de l'email d'alerte de date de validité de grille dépassée
+MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_TO = Destinataire de l'email d'alerte de date de validité de grille dépassée
 
 #
 # About page
@@ -61,3 +63,6 @@ MyWidgetDescription = My widget description
 #
 Extrafield_product_supplier_price_validity_date = Date limite de validité du prix
 ExtrafieldTooltip_product_supplier_price_validity_date = Date limite à laquelle le fournisseur s'engage à nous vendre le produit à ce prix
+
+Extrafield_supplier_prices_validity_date = Date limite de validité des prix d'achat
+ExtrafieldToolTip_supplier_prices_validity_date = Date limite à laquelle le fournisseur s'engage à nous vendre ses produits à ce prix

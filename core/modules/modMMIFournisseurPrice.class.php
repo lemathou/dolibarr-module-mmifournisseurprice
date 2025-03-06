@@ -425,48 +425,15 @@ class modMMIFournisseurPrice extends DolibarrModules
 		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		$extrafields = new ExtraFields($this->db);
 
-		// Supplier price
+		// Supplier
 
-        $extrafields->addExtraField('validity_date', $langs->trans('Extrafield_product_supplier_price_validity_date'), 'date', 100, "", 'product_fournisseur_price', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_supplier_price_validity_date'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_VALIDITY_DATE');
+		// Validity date
+        $extrafields->addExtraField('validity_date', $langs->trans('Extrafield_supplier_prices_validity_date'), 'date', 100, "", 'societe', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_prices_validity_date'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_VALIDITY_DATE');
 
 		// Permissions
 		$this->remove($options);
 
 		$sql = array();
-
-		// Document templates
-		$moduledir = 'mmifournisseurprice';
-		$myTmpObjects = array();
-		$myTmpObjects['MyObject'] = array('includerefgeneration'=>0, 'includedocgeneration'=>0);
-
-		foreach ($myTmpObjects as $myTmpObjectKey => $myTmpObjectArray) {
-			if ($myTmpObjectKey == 'MyObject') {
-				continue;
-			}
-			if ($myTmpObjectArray['includerefgeneration']) {
-				$src = DOL_DOCUMENT_ROOT.'/install/doctemplates/mmifournisseurprice/template_myobjects.odt';
-				$dirodt = DOL_DATA_ROOT.'/doctemplates/mmifournisseurprice';
-				$dest = $dirodt.'/template_myobjects.odt';
-
-				if (file_exists($src) && !file_exists($dest)) {
-					require_once DOL_DOCUMENT_ROOT.'/core/lib/files.lib.php';
-					dol_mkdir($dirodt);
-					$result = dol_copy($src, $dest, 0, 0);
-					if ($result < 0) {
-						$langs->load("errors");
-						$this->error = $langs->trans('ErrorFailToCopyFile', $src, $dest);
-						return 0;
-					}
-				}
-
-				$sql = array_merge($sql, array(
-					"DELETE FROM ".MAIN_DB_PREFIX."document_model WHERE nom = 'standard_".strtolower($myTmpObjectKey)."' AND type = '".strtolower($myTmpObjectKey)."' AND entity = ".$conf->entity,
-					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity) VALUES('standard_".strtolower($myTmpObjectKey)."','".strtolower($myTmpObjectKey)."',".$conf->entity.")",
-					"DELETE FROM ".MAIN_DB_PREFIX."document_model WHERE nom = 'generic_".strtolower($myTmpObjectKey)."_odt' AND type = '".strtolower($myTmpObjectKey)."' AND entity = ".$conf->entity,
-					"INSERT INTO ".MAIN_DB_PREFIX."document_model (nom, type, entity) VALUES('generic_".strtolower($myTmpObjectKey)."_odt', '".strtolower($myTmpObjectKey)."', ".$conf->entity.")"
-				));
-			}
-		}
 
 		return $this->_init($sql, $options);
 	}

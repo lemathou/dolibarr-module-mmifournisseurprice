@@ -32,6 +32,8 @@ $arrayofparameters = array(
 	'MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING'=>array('type'=>'int', 'enabled'=>1),
 	'MMIFOURNISSEURPRICE_DELAI'=>array('type'=>'int','enabled'=>1),
 	'MMIFOURNISSEURPRICE_VALIDITY_DATE'=>array('type'=>'yesno','enabled'=>1),
+	'MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_FROM'=>array('type'=>'string','enabled'=>1),
+	'MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_TO'=>array('type'=>'string','enabled'=>1),
 );
 
 require_once('../../mmicommon/admin/mmisetup_1.inc.php');
