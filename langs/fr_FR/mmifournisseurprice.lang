@@ -20,7 +20,7 @@
 # Module label 'ModuleMMIFournisseurPriceName'
 ModuleMMIFournisseurPriceName = Prix de revient amélioré
 # Module description 'ModuleMMIFournisseurPriceDesc'
-ModuleMMIFournisseurPriceDesc = Gestion du prix de revient avec le transport du fournisseur
+ModuleMMIFournisseurPriceDesc = Amélioration fournisseurs et prix de revient avec le transport du fournisseur
 
 #
 # Admin page
@@ -28,17 +28,21 @@ ModuleMMIFournisseurPriceDesc = Gestion du prix de revient avec le transport du 
 MMIFournisseurPriceSetup = MMIFournisseurPrice setup
 Settings = Settings
 MMIFournisseurPriceSetupPage = MMIFournisseurPrice setup page
+MMIFOURNISSEURPRICE_AUTOCALCULATE_INFO = Gestion automatique de prix de revient
 MMIFOURNISSEURPRICE_AUTOCALCULATE = Calcul automatique de prix de revient (lorsqu'on modifie le prix du fournisseur)
 MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS = Calcul automatique de prix d'achat fournisseur basé sur l'historique de commande
 MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING = Produit servant au Transport
 MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPINGTooltip = Produit/Service utilisé pour le transport qui sera recherché dans les commandes fournisseur
 MMIFOURNISSEURPRICE_DELAI = Délai maxi commandes fournisseur
 MMIFOURNISSEURPRICE_DELAITooltip = On recherchera les commandes fournisseur datant de moins de x mois pour calculer les frais de transport
-MMIFOURNISSEURPRICE_VALIDITY_DATE = Gestion de la date de validité de la grille de produits fournisseur (prix d'achat)
 MMIFOURNISSEURPRICE_FOURN_PRICE_UPDATE = Mise à jour prix d'achat fournisseur
 MMIFOURNISSEURPRICE_FOURN_REMISE_UPDATE = Mise à jour remise fournisseur
+MMIFOURNISSEURPRICE_VALIDITY_GRILLE = Gestion des grilles de produits fournisseur
+MMIFOURNISSEURPRICE_VALIDITY_DATE = Gestion de la date de validité de la grille de produits fournisseur (prix d'achat)
 MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_FROM = Expéditeur de l'email d'alerte de date de validité de grille dépassée
 MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_TO = Destinataire de l'email d'alerte de date de validité de grille dépassée
+MMIFOURNISSEURPRICE_FRANCO_INFO = Gestion du franco de commande fournisseur
+MMIFOURNISSEURPRICE_FRANCO = Affichage de l'option de franco de commande fournisseur
 
 #
 # About page
@@ -66,3 +70,8 @@ ExtrafieldTooltip_product_supplier_price_validity_date = Date limite à laquelle
 
 Extrafield_supplier_prices_validity_date = Date limite de validité des prix d'achat
 ExtrafieldToolTip_supplier_prices_validity_date = Date limite à laquelle le fournisseur s'engage à nous vendre ses produits à ce prix
+
+Extrafield_supplier_franco_type = Type de franco
+ExtrafieldToolTip_supplier_franco_type = De quelle façon le franco est calculé
+Extrafield_supplier_franco_value = Valeur du franco
+

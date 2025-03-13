@@ -27,13 +27,17 @@ require_once '../env.inc.php';
 require_once '../main_load.inc.php';
 
 $arrayofparameters = array(
+	'MMIFOURNISSEURPRICE_AUTOCALCULATE_INFO'=>array('type'=>'separator','enabled'=>1),
 	'MMIFOURNISSEURPRICE_AUTOCALCULATE'=>array('type'=>'yesno','enabled'=>1),
 	'MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS'=>array('type'=>'yesno','enabled'=>1),
 	'MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING'=>array('type'=>'int', 'enabled'=>1),
 	'MMIFOURNISSEURPRICE_DELAI'=>array('type'=>'int','enabled'=>1),
+	'MMIFOURNISSEURPRICE_VALIDITY_GRILLE'=>array('type'=>'separator','enabled'=>1),
 	'MMIFOURNISSEURPRICE_VALIDITY_DATE'=>array('type'=>'yesno','enabled'=>1),
 	'MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_FROM'=>array('type'=>'string','enabled'=>1),
 	'MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_TO'=>array('type'=>'string','enabled'=>1),
+	'MMIFOURNISSEURPRICE_FRANCO_INFO'=>array('type'=>'separator','enabled'=>1),
+	'MMIFOURNISSEURPRICE_FRANCO'=>array('type'=>'yesno','enabled'=>1),
 );
 
 require_once('../../mmicommon/admin/mmisetup_1.inc.php');

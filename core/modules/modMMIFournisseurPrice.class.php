@@ -68,8 +68,8 @@ class modMMIFournisseurPrice extends DolibarrModules
 		$this->descriptionlong = "MMIFournisseurPriceDescription";
 
 		// Author
-		$this->editor_name = 'Mathieu Moulin iProspective';
-		$this->editor_url = 'https://www.iprospective.fr/';
+		$this->editor_name = 'Mathieu Moulin iProspective (MMI)';
+		$this->editor_url = 'https://iprospective.fr/';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
 		$this->version = '1.0';
@@ -429,6 +429,8 @@ class modMMIFournisseurPrice extends DolibarrModules
 
 		// Validity date
         $extrafields->addExtraField('validity_date', $langs->trans('Extrafield_supplier_prices_validity_date'), 'date', 100, "", 'societe', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_prices_validity_date'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_VALIDITY_DATE');
+        $extrafields->addExtraField('franco_type', $langs->trans('Extrafield_supplier_franco_type'), 'select', 100, "", 'societe', 0, 0, '', ['1'=>'Palettes', '2'=>'Montant'], 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_franco_type'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_FRANCO');
+        $extrafields->addExtraField('franco_value', $langs->trans('Extrafield_supplier_franco_value'), 'double', 100, "10,2", 'societe', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_franco_value'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_FRANCO');
 
 		// Permissions
 		$this->remove($options);
