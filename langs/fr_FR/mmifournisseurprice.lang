@@ -75,3 +75,5 @@ Extrafield_supplier_franco_type = Type de franco
 ExtrafieldToolTip_supplier_franco_type = De quelle façon le franco est calculé
 Extrafield_supplier_franco_value = Valeur du franco
 
+Extrafield_product_supplier_calculated_shipping_price = Frais d'acheminement calculés
+ExtrafieldToolTip_product_supplier_calculated_shipping_price = Frais d'acheminement calculés sur la base des commandes fournisseur des N (=18 par défaut) derniers mois

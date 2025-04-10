@@ -270,6 +270,7 @@ class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 
 			$form = $parameters['form'];
 			$autocalculate = !empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE);
+			$autocalculate_orders = !empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS);
 			$usercancreate = $parameters['usercancreate'];
 			// disabled @todo make it realley editable...
 			$usercancreate = false;
@@ -301,8 +302,17 @@ class ActionsMMIFournisseurPrice extends MMI_Actions_1_0
 			print $form->editfieldval($text, 'shipping_cost_price', $object->array_options['options_shipping_cost_price'], $object, $usercancreate && !$autocalculate, 'amount:6');
 			print '</td></tr>';
 
-			if ($autocalculate) {
-				print '<tr><td></td><td>'.'ATTENTION : Le montant des frais d\'acheminements et le prix de revient sont recalculés automatiquement à chaque modification du produit ou d\'un prix d\'achat fournisseur.<br />Le prix fournisseur le plus bas est utilisé, sur la base du minimum de "frais d\'acheminements" + "prix d\'achat".'.'</td></tr>';
+			// Cost price. Can be used for margin module for option "calculate margin on explicit cost price
+			if ($autocalculate_orders) {
+				print '<tr><td>';
+				$textdesc = $langs->trans("ExtrafieldToolTip_product_shipping_calculated_cost_price");
+				$text = $form->textwithpicto($langs->trans("Extrafield_product_shipping_calculated_cost_price"), $textdesc, 1, 'help', '');
+				print $form->editfieldkey($text, 'shipping_calculated_cost_price', $object->array_options['options_shipping_calculated_cost_price'], $object, $usercancreate, 'amount:6');
+				print '</td><td>';
+				print $form->editfieldval($text, 'shipping_calculated_cost_price', $object->array_options['options_shipping_calculated_cost_price'], $object, $usercancreate, 'amount:6');
+				print '</td></tr>';
+
+				print '<tr><td></td><td>'.'ATTENTION : Le montant des frais d\'acheminements calculés et le prix de revient sont recalculés automatiquement à chaque modification du produit ou d\'un prix d\'achat fournisseur, d\'une réception, etc.<br />Le prix fournisseur le plus bas est utilisé, sur la base du minimum de "frais d\'acheminements" + "prix d\'achat".'.'</td></tr>';
 			}
 		}
 

@@ -425,8 +425,15 @@ class modMMIFournisseurPrice extends DolibarrModules
 		include_once DOL_DOCUMENT_ROOT.'/core/class/extrafields.class.php';
 		$extrafields = new ExtraFields($this->db);
 
-		// Supplier
+		// Supplier price
+		// Supplier shipping price
+        $extrafields->addExtraField('shipping_calculated_price', $langs->trans('Extrafield_product_supplier_calculated_shipping_price'), 'price', 100, "20,5", 'product_fournisseur_price', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_supplier_shipping_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS');
 
+		// Product
+		// calculated shipping cost
+        $extrafields->addExtraField('shipping_calculated_cost_price', $langs->trans('Extrafield_product_shipping_calculated_cost_price'), 'price', 60, "20,5", 'product', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_product_shipping_calculated_cost_price'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE');
+
+		// Supplier
 		// Validity date
         $extrafields->addExtraField('validity_date', $langs->trans('Extrafield_supplier_prices_validity_date'), 'date', 100, "", 'societe', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_prices_validity_date'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_VALIDITY_DATE');
         $extrafields->addExtraField('franco_type', $langs->trans('Extrafield_supplier_franco_type'), 'select', 100, "", 'societe', 0, 0, '', ['1'=>'Palettes', '2'=>'Montant'], 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_franco_type'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_FRANCO');

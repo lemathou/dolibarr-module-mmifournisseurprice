@@ -113,6 +113,7 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			return call_user_func($callback, $action, $object, $user, $langs, $conf);
 		};
 		
+		//var_dump($action);
 		// Or you can execute some code here
 		switch ($action) {
 			// Users
@@ -155,11 +156,15 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			//case 'PRODUCT_SET_MULTILANGS':
 			//case 'PRODUCT_DEL_MULTILANGS':
 
+			case 'PRODUCTFOURNISSEURPRICE_MODIFY':
+				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE)) {
+					$this->product_cost_price_calc($object->fk_product);
+				}
+				break;
 			case 'SUPPLIER_PRODUCT_BUYPRICE_MODIFY':
 				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE)) {
 					$this->product_cost_price_calc($object->product_id);
 				}
-				
 				break;
 
 			//Stock mouvement
@@ -186,12 +191,13 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			// Supplier orders
 			//case 'ORDER_SUPPLIER_CREATE':
 			case 'ORDER_SUPPLIER_MODIFY':
-				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS) && $object->statut >= 1) {
+				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS) && $object->status >= 1) {
 					$this->commande_fournisseur_calc($object);
 				}
 				break;
 			case 'ORDER_SUPPLIER_VALIDATE':
 			case 'ORDER_SUPPLIER_APPROVE':
+			case 'ORDER_SUPPLIER_RECEIVE':
 				if (!empty($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS)) {
 					$this->commande_fournisseur_calc($object);
 				}
@@ -352,7 +358,6 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 		foreach($object->lines as $line)
 			if (is_numeric($line->fk_product) && !in_array($line->fk_product, $product_ids))
 				$product_ids[] = $line->fk_product;
-		//var_dump($product_ids);
 		
 		$this->product_ids_calc($product_ids);
 	}
@@ -442,7 +447,7 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			
 			$productfournisseurprice->fetch($r['fk_product_fournisseur_price']);
 			//$productfournisseurprice->fetch_optionals();
-			$productfournisseurprice->array_options['options_shipping_price'] = $product_shipping_price_unit;
+			$productfournisseurprice->array_options['options_shipping_calculated_price'] = $product_shipping_price_unit;
 			$productfournisseurprice->update($user);
 		}
 		//var_dump($l);
@@ -474,11 +479,15 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			//$productfournisseurprice->fetch_optionals();
 			//var_dump($fourn_shipping_cost_price+$fourn_unit_price, $productfournisseurprice->unitprice, $productfournisseurprice->array_options, $productfournisseurprice->array_options['options_shipping_price']);
 			//var_dump($productfournisseurprice);
-			if($fourn_shipping_cost_price+$fourn_unit_price > 0 && $fourn_shipping_cost_price+$fourn_unit_price < $productfournisseurprice->unitprice*(1-$productfournisseurprice->remise_percent/100) + (float)$productfournisseurprice->array_options['options_shipping_price'])
+			// Test si ce fournisseur est moins cher que le moins cher déjà testé
+			$new_shipping_cost_price = (float)($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS ?$productfournisseurprice->array_options['options_shipping_calculated_price'] :$productfournisseurprice->array_options['options_shipping_price']);
+			$new_fourn_unit_price = (float)$productfournisseurprice->unitprice*(1-$productfournisseurprice->remise_percent/100);
+			//var_dump($new_shipping_cost_price, $new_fourn_unit_price);
+			if(($fourn_shipping_cost_price+$fourn_unit_price) > 0 && ($fourn_shipping_cost_price+$fourn_unit_price) < ($new_shipping_cost_price+$new_fourn_unit_price))
 				continue;
 			
-			$fourn_shipping_cost_price = $productfournisseurprice->array_options['options_shipping_price'];
-			$fourn_unit_price = $productfournisseurprice->unitprice*(1-$productfournisseurprice->remise_percent/100);
+			$fourn_shipping_cost_price = $new_shipping_cost_price;
+			$fourn_unit_price = $new_fourn_unit_price;
 		}
 		//echo 'ok';
 		$product->array_options['options_shipping_cost_price'] = $fourn_shipping_cost_price;
