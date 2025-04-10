@@ -480,7 +480,10 @@ class InterfaceMMIFournisseurPriceTriggers extends DolibarrTriggers
 			//var_dump($fourn_shipping_cost_price+$fourn_unit_price, $productfournisseurprice->unitprice, $productfournisseurprice->array_options, $productfournisseurprice->array_options['options_shipping_price']);
 			//var_dump($productfournisseurprice);
 			// Test si ce fournisseur est moins cher que le moins cher déjà testé
-			$new_shipping_cost_price = (float)($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS ?$productfournisseurprice->array_options['options_shipping_calculated_price'] :$productfournisseurprice->array_options['options_shipping_price']);
+			if ($conf->global->MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS && is_null($productfournisseurprice->array_options['options_shipping_price']))
+				$new_shipping_cost_price = (float)($productfournisseurprice->array_options['options_shipping_calculated_price']);
+			else
+				$new_shipping_cost_price = (float)$productfournisseurprice->array_options['options_shipping_price'];
 			$new_fourn_unit_price = (float)$productfournisseurprice->unitprice*(1-$productfournisseurprice->remise_percent/100);
 			//var_dump($new_shipping_cost_price, $new_fourn_unit_price);
 			if(($fourn_shipping_cost_price+$fourn_unit_price) > 0 && ($fourn_shipping_cost_price+$fourn_unit_price) < ($new_shipping_cost_price+$new_fourn_unit_price))
