@@ -26,7 +26,6 @@ ModuleMMIFournisseurPriceDesc = Amélioration fournisseurs et prix de revient av
 # Admin page
 #
 MMIFournisseurPriceSetup = MMIFournisseurPrice setup
-Settings = Settings
 MMIFournisseurPriceSetupPage = MMIFournisseurPrice setup page
 MMIFOURNISSEURPRICE_AUTOCALCULATE_INFO = Gestion automatique de prix de revient
 MMIFOURNISSEURPRICE_AUTOCALCULATE = Calcul automatique de prix de revient (lorsqu'on modifie le prix du fournisseur)
@@ -47,7 +46,6 @@ MMIFOURNISSEURPRICE_FRANCO = Affichage de l'option de franco de commande fournis
 #
 # About page
 #
-About = About
 MMIFournisseurPriceAbout = About MMIFournisseurPrice
 MMIFournisseurPriceAboutPage = MMIFournisseurPrice about page
 
