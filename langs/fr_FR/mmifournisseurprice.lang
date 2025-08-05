@@ -49,6 +49,15 @@ MMIFOURNISSEURPRICE_FRANCO = Affichage de l'option de franco de commande fournis
 MMIFournisseurPriceAbout = About MMIFournisseurPrice
 MMIFournisseurPriceAboutPage = MMIFournisseurPrice about page
 
+
+#
+# Job Cron
+#
+MMIFournPriceCronUpdateCostPricePropal=Mise à jour des prix de reviens sur les ligne de devis
+MMIFournPriceCronCostPricePropalStartJob=Démarrage du processus de mise à jour des prix de reviens
+MMIFournPriceCronCostPricePropalEndJob=Fin du processus de mise à jour des prix de reviens
+MMIFournPriceCronCostPriceUpdate=%d lignes mise à jour
+
 #
 # Sample page
 #
