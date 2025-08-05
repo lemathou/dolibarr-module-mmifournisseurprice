@@ -18,7 +18,7 @@ class MMIFournisseurPriceUtils extends MMI_Generic_1_0
 
 		$error = 0;
 		$this->output = '';
-		$this->error = '';
+		$this->errors = [];
 
 		dol_syslog(__METHOD__, LOG_DEBUG);
 
