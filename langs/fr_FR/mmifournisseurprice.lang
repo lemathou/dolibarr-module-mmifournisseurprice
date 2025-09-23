@@ -84,3 +84,7 @@ Extrafield_supplier_franco_value = Valeur du franco
 
 Extrafield_product_supplier_calculated_shipping_price = Frais d'acheminement calculés
 ExtrafieldToolTip_product_supplier_calculated_shipping_price = Frais d'acheminement calculés sur la base des commandes fournisseur des N (=18 par défaut) derniers mois
+
+
+Extrafield_dt_deb_ope_fourn = Date de debut d'ope commercial fournisseur
+Extrafield_dt_fin_ope_fourn = Date de fin d'ope commercial fournisseur
