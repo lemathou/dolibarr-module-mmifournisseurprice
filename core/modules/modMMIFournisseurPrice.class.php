@@ -439,6 +439,8 @@ class modMMIFournisseurPrice extends DolibarrModules
         $extrafields->addExtraField('validity_date', $langs->trans('Extrafield_supplier_prices_validity_date'), 'date', 100, "", 'societe', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_prices_validity_date'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_VALIDITY_DATE');
         $extrafields->addExtraField('franco_type', $langs->trans('Extrafield_supplier_franco_type'), 'select', 100, "", 'societe', 0, 0, '', ['1'=>'Palettes', '2'=>'Montant'], 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_franco_type'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_FRANCO');
         $extrafields->addExtraField('franco_value', $langs->trans('Extrafield_supplier_franco_value'), 'double', 100, "10,2", 'societe', 0, 0, '', "", 1, '', 1, $langs->trans('ExtrafieldToolTip_supplier_franco_value'), '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled && $conf->global->MMIFOURNISSEURPRICE_FRANCO');
+        $extrafields->addExtraField('dt_deb_ope_fourn', $langs->trans('Extrafield_dt_deb_ope_fourn'), 'date', 105, "", 'propal', 0, 0, '', "", 1, '', 1, '', '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
+        $extrafields->addExtraField('dt_fin_ope_fourn', $langs->trans('Extrafield_dt_fin_ope_fourn'), 'date', 110, "", 'propal', 0, 0, '', "", 1, '', 1, '', '', $conf->entity, 'mmifournisseurprice@mmifournisseurprice', '$conf->mmifournisseurprice->enabled');
 
 		// Permissions
 		$this->remove($options);

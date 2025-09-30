@@ -24,6 +24,8 @@ class MMIFournisseurPriceUtils extends MMI_Generic_1_0
 		dol_syslog(__METHOD__, LOG_DEBUG);
 
 		$now = dol_now();
+		$day_before= dol_time_plus_duree($now,-1,'d');
+		$day_before_date= dol_mktime(0, 0, 0, dol_print_date($day_before,'%m'), dol_print_date($day_before,'%d'), dol_print_date($day_before,'%Y'));
 
 		$this->output .= $langs->trans('MMIFournPriceCronCostPricePropalStartJob', dol_print_date($now, 'dayhourtext')) . '<BR>';
 
@@ -31,12 +33,16 @@ class MMIFournisseurPriceUtils extends MMI_Generic_1_0
 
 
 		$sql ="UPDATE " . MAIN_DB_PREFIX . "propaldet as dest,
-				" . MAIN_DB_PREFIX . "propal as p, " . MAIN_DB_PREFIX . "product as prod
+				" . MAIN_DB_PREFIX . "propal as p,
+				" . MAIN_DB_PREFIX . "product as prod,
+				" . MAIN_DB_PREFIX . "propal_extrafields as pext
 			SET dest.buy_price_ht=prod.cost_price
 			WHERE dest.fk_propal = p.rowid
 			AND prod.rowid=dest.fk_product
 			AND p.fk_statut IN (0,1)
-			AND dest.buy_price_ht<>prod.cost_price";
+			AND pext.fk_object=p.rowid
+			AND dest.buy_price_ht<>prod.cost_price
+			AND pext.dt_fin_ope_fourn='".$this->db->idate($day_before_date)."'";
 
 		$resql = $this->db->query($sql);
 		if ($resql) {
