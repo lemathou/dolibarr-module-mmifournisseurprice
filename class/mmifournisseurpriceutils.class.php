@@ -9,16 +9,17 @@ dol_include_once('/mmicommon/class/mmi_generic.class.php');
 
 class MMIFournisseurPriceUtils extends MMI_Generic_1_0
 {
+	public $output;
+	public $errors = [];
 
 	public function updateCostPricePropal()
 	{
 
-		global $conf, $langs, $user;;
-		$langs->load('mmifournisseurprice@mmifournisseurprice');
+		global $conf, $langs, $user;
 
 		$error = 0;
 		$this->output = '';
-		$this->error = '';
+		$this->errors = [];
 
 		dol_syslog(__METHOD__, LOG_DEBUG);
 
@@ -66,3 +67,5 @@ class MMIFournisseurPriceUtils extends MMI_Generic_1_0
 		return (!empty($error) ? $error : 0);
 	}
 }
+
+MMIFournisseurPriceUtils::__init();
