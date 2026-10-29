@@ -1,86 +1,77 @@
-# MMIFOURNISSEURPRICE FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
+# MMIFournisseurPrice — Prix fournisseurs : tarifs, historiques et comparaison.
 
-## Features
+> Module Dolibarr **MMIFournisseurPrice** (version 1.0), branche `20.0`.
 
-Description of the module...
+## Fonctionnalités
 
-<!--
-![Screenshot mmifournisseurprice](img/screenshot_mmifournisseurprice.png?raw=true "MMIFournisseurPrice"){imgmd}
--->
+### Fonctionnalités principales
 
-Other external modules are available on [Dolistore.com](https://www.dolistore.com).
+- Tarifs fournisseurs, historiques et comparaison des prix.
+- Configuration et menus dédiés.
 
-## Translations
+### Écrans et menus
 
-Translations can be completed manually by editing files into directories *langs*.
+- **Prix de revient amélioré** — `/mmifournisseurprice/mmifournisseurpriceindex.php` (menu mmifournisseurprice, droit `1`)
 
-<!--
-This module contains also a sample configuration for Transifex, under the hidden directory [.tx](.tx), so it is possible to manage translation using this service.
+### Pages
 
-For more informations, see the [translator's documentation](https://wiki.dolibarr.org/index.php/Translator_documentation).
+- `admin/about.php`
+- `admin/setup.php`
+- `mmifournisseurpriceindex.php`
 
-There is a [Transifex project](https://transifex.com/projects/p/dolibarr-module-template) for this module.
--->
+### Configuration
 
-<!--
+| Constante | Type | Rôle |
+|---|---|---|
+| `MMIFOURNISSEURPRICE_AUTOCALCULATE_INFO` | separator | Gestion automatique de prix de revient |
+| `MMIFOURNISSEURPRICE_AUTOCALCULATE` | yesno | Calcul automatique de prix de revient (lorsqu'on modifie le prix du fournisseur) |
+| `MMIFOURNISSEURPRICE_AUTOCALCULATE_ORDERS` | yesno | Calcul automatique des frais d'acheminement fournisseur basé sur l'historique de commande, utilisé dans le calcul dans le calcul du prix de reviens lorsqu'un prix manuel n'est pas renseigné |
+| `MMIFOURNISSEURPRICE_FK_PRODUCT_SHIPPING` | int | Produit servant au Transport |
+| `MMIFOURNISSEURPRICE_DELAI` | int | Délai maxi commandes fournisseur |
+| `MMIFOURNISSEURPRICE_VALIDITY_GRILLE` | separator | Gestion des grilles de produits fournisseur |
+| `MMIFOURNISSEURPRICE_VALIDITY_DATE` | yesno | Gestion de la date de validité de la grille de produits fournisseur (prix d'achat) |
+| `MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_FROM` | string | Expéditeur de l'email d'alerte de date de validité de grille dépassée |
+| `MMIFOURNISSEURPRICE_VALIDITY_DATE_EMAIL_ALERT_TO` | string | Destinataire de l'email d'alerte de date de validité de grille dépassée |
+| `MMIFOURNISSEURPRICE_FRANCO_INFO` | separator | Gestion du franco de commande fournisseur |
+| `MMIFOURNISSEURPRICE_FRANCO` | yesno | Affichage de l'option de franco de commande fournisseur |
+
+### Hooks
+
+- Contextes : `pricesuppliercard`, `productservicelist`
+- Callbacks : `addMoreMassActions`, `doMassActions`, `doPreMassActions`, `ObjectExtraFields`, `h`
+
+### Triggers
+
+- `core/triggers/interface_99_modMMIFournisseurPrice_MMIFournisseurPriceTriggers.class.php`
+
+### Classes et composants
+
+- `class/actions_mmifournisseurprice.class.php`
+- `class/mmifournisseurpriceutils.class.php`
+- `lib/mmifournisseurprice.lib.php`
+
+## Prérequis
+
+- Dolibarr >= 11.0 (branche `20.0` : Dolibarr 20.0).
+- Modules MMI : `mmicommon`, `mmishipping`, `mmiproduct`. **`mmicommon` doit être activé en premier.**
+- Modules cœur : `product`, `fournisseur`, `reception`.
 
 ## Installation
 
-### From the ZIP file and GUI interface
+1. Copier le module dans `htdocs/custom/mmifournisseurprice` :
 
-- If you get the module in a zip file (like when downloading it from the market place [Dolistore](https://www.dolistore.com)), go into
-menu ```Home - Setup - Modules - Deploy external module``` and upload the zip file.
+   ```sh
+   cd htdocs/custom
+   git clone <dépôt> mmifournisseurprice
+   ```
 
-Note: If this screen tell you there is no custom directory, check your setup is correct:
+2. Dans Dolibarr : **Configuration → Modules**, activer d'abord `mmicommon`, puis ce module.
+3. Vérifier les permissions dans la fiche des utilisateurs concernés.
 
-- In your Dolibarr installation directory, edit the ```htdocs/conf/conf.php``` file and check that following lines are not commented:
+## Licence
 
-    ```php
-    //$dolibarr_main_url_root_alt ...
-    //$dolibarr_main_document_root_alt ...
-    ```
+GPLv3 ou ultérieure — voir `COPYING`. Documentation sous GFDL.
 
-- Uncomment them if necessary (delete the leading ```//```) and assign a sensible value according to your Dolibarr installation
+## Changelog
 
-    For example :
-
-    - UNIX:
-        ```php
-        $dolibarr_main_url_root_alt = '/custom';
-        $dolibarr_main_document_root_alt = '/var/www/Dolibarr/htdocs/custom';
-        ```
-
-    - Windows:
-        ```php
-        $dolibarr_main_url_root_alt = '/custom';
-        $dolibarr_main_document_root_alt = 'C:/My Web Sites/Dolibarr/htdocs/custom';
-        ```
-
-### From a GIT repository
-
-- Clone the repository in ```$dolibarr_main_document_root_alt/mmifournisseurprice```
-
-```sh
-cd ....../custom
-git clone git@github.com:gitlogin/mmifournisseurprice.git mmifournisseurprice
-```
-
-### <a name="final_steps"></a>Final steps
-
-From your browser:
-
-  - Log into Dolibarr as a super-administrator
-  - Go to "Setup" -> "Modules"
-  - You should now be able to find and enable the module
-
--->
-
-## Licenses
-
-### Main code
-
-GPLv3 or (at your option) any later version. See file COPYING for more information.
-
-### Documentation
-
-All texts and readmes are licensed under GFDL.
+Voir [CHANGELOG.md](CHANGELOG.md) (évolutions datées).
